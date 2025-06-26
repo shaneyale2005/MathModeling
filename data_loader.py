@@ -8,9 +8,11 @@ def load_and_preprocess_data():
     df = pd.read_csv(config.DATA_PATH, parse_dates=['publish_time'], encoding='gbk')
     print(f"原始数据量: {len(df)}条")
     print(df.head())
+
+#另一种办法是，将置信度数据的分布“拉近”正态，然后使用删正态分布极端值的办法处理。（在于有无必要在这种地方大费篇章）
+
     # 移除低置信度数据
-    original_len = len(df)
-        
+    original_len = len(df)    
     # 例如，如果这个值为0.7, 那么所有confidence < 0.7 的数据都将被移除
     confidence_threshold = df['confidence'].quantile(config.CONFIDENCE_QUANTILE_THRESHOLD)
         
@@ -29,7 +31,7 @@ def load_and_preprocess_data():
         axis=1
     )
     
-    # 计算总互动量
+    # 计算总互动量（此处可加入数学模型，毕竟转发，评论等操作的权重不可能一样）
     df['total_interaction'] = df['repost_count'] + df['comment_count'] + df['quote_count']
     
     print(f"清洗后数据量: {len(df)}条")

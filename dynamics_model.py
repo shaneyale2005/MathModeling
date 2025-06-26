@@ -3,7 +3,7 @@ import numpy as np
 from scipy.integrate import solve_ivp
 from scipy.optimize import minimize
 from config import config
-
+#我认为可以加入互动这个创新点，就是正面对中性和负面有影响，负面同样，然后中性只能被影响（然后我们拿一篇心理学方面的文章，佐证我们的想法，即负面和正面人价值会影响，我们创新点就是将该文章运用到舆论分析的数学模型里面）
 def sentiment_dynamics(t, y, beta_p, beta_n, alpha_p, alpha_n, gamma):
     """定义情感演化动力学方程"""
     S, I_p, I_n, R = y
