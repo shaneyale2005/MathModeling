@@ -2,10 +2,11 @@
 class Config:
 
     DATA_PATH = './dataset/data.csv'
-      # 情感标签修正阈值 (基于均值±0.4标准差的统计学优化)
+    # 情感标签修正阈值 (基于均值±0.4标准差的统计学优化)
     POSITIVE_THRESHOLD = 0.204
     NEGATIVE_THRESHOLD = -0.194
-    
+    #计算置信度的分位数阈值
+    CONFIDENCE_QUANTILE_THRESHOLD = 0.05
     # 时间窗口配置
     TIME_WINDOW = '6h'  # 6小时时间窗口
       # 模型训练配置 (确保充足训练数据和可靠测试集)
