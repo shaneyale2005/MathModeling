@@ -8,13 +8,12 @@ from data_loader import load_and_preprocess_data
 from feature_engineer import create_time_features, create_warning_features
 from dynamics_model import fit_dynamics_model, fit_dynamics_model_improved, predict_full_model
 from warning_system import train_warning_model
-from visualization import plot_sentiment_trends, plot_model_validation_comparison
+from visualization import plot_sentiment_trends, plot_model_validation_comparison # 使用新函数
 
 def main():
     print("====== 网络舆情情感演化分析系统 (动态参数改进版) ======")
     
-    if not os.path.exists(config.OUTPUT_DIR):
-        os.makedirs(config.OUTPUT_DIR)
+    ensure_output_dir()
 
     # 1. 数据加载与预处理
     raw_df = load_and_preprocess_data()
@@ -60,14 +59,18 @@ def main():
     y_train, y_test = y.iloc[:split_idx], y.iloc[split_idx:-1]
     
     # 训练并评估预警模型
-    if not X_train.empty and not y_train.empty:
+    if not X_train.empty and not y_train.empty and not X_test.empty and not y_test.empty:
         warning_model = train_warning_model(X_train, y_train, X_test, y_test)
         joblib.dump(warning_model, f"{config.OUTPUT_DIR}/warning_model.pkl")
         print("✓ 预警模型已保存。")
     else:
-        print("警告：用于预警模型的训练数据为空，跳过训练。")
+        print("警告：用于预警模型的训练或测试数据为空，跳过训练。")
 
     print(f"\n分析完成! 所有结果已保存在 '{config.OUTPUT_DIR}/' 目录中。")
+
+def ensure_output_dir():
+    if not os.path.exists(config.OUTPUT_DIR):
+        os.makedirs(config.OUTPUT_DIR)
 
 if __name__ == "__main__":
     main()
