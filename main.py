@@ -9,6 +9,7 @@ from feature_engineer import create_time_features, create_warning_features
 from dynamics_model import fit_dynamics_model, fit_dynamics_model_improved, predict_full_model
 from warning_system import train_warning_model
 from visualization import plot_sentiment_trends, plot_model_validation_comparison # 使用新函数
+from advanced_model_visualization import plot_sentiment_model_analysis, plot_warning_model_analysis, plot_model_comparison_analysis
 
 def main():
     print("====== 网络舆情情感演化分析系统 (动态参数改进版) ======")
@@ -17,6 +18,10 @@ def main():
 
     # 1. 数据加载与预处理
     raw_df = load_and_preprocess_data()
+    
+    # 1.5. 生成高级情感模型分析图表
+    print("\n--- 正在生成高级情感模型分析图表 ---")
+    plot_sentiment_model_analysis(raw_df)
     
     # 2. 特征工程
     time_features = create_time_features(raw_df)
@@ -63,6 +68,15 @@ def main():
         warning_model = train_warning_model(X_train, y_train, X_test, y_test)
         joblib.dump(warning_model, f"{config.OUTPUT_DIR}/warning_model.pkl")
         print("✓ 预警模型已保存。")
+        
+        # 生成高级预警模型分析图表
+        print("\n--- 正在生成高级预警模型分析图表 ---")
+        plot_warning_model_analysis(warning_model, raw_df)
+        
+        # 生成模型对比分析图表
+        print("\n--- 正在生成模型对比分析图表 ---")
+        plot_model_comparison_analysis(warning_model, raw_df)
+        
     else:
         print("警告：用于预警模型的训练或测试数据为空，跳过训练。")
 
