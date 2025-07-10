@@ -1,11 +1,9 @@
-# dynamics_model.py
 import numpy as np
 import pandas as pd
 from scipy.integrate import solve_ivp
 from scipy.optimize import minimize
 from config import config
 
-# --- 原始模型 ---
 def sentiment_dynamics(t, y, beta_p, beta_n, alpha_p, alpha_n, gamma):
     S, I_p, I_n, R = y
     dSdt = -beta_p * I_p * S - beta_n * I_n * S + gamma * R
@@ -38,7 +36,6 @@ def fit_dynamics_model(train_features):
     result = minimize(model_loss, initial_params, bounds=bounds, method='L-BFGS-B')
     return result.x
 
-# --- 【改进后】的模型 ---
 def sentiment_dynamics_improved(t, y, params, time_features_df):
     base_beta_p, base_beta_n, alpha_p, alpha_n, gamma, k_p, k_n = params
     S, I_p, I_n, R = y
